@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  api:
+    build:
+      context: .
+    environment:
+      - REDIS_HOST=redis
+    command: >
+      sh -c "python3 manage.py migrate && python3 manage.py collectstatic --noinput &&
+             python3 manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/djangorest4
+
+    ports:
+      - 9000:8000
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - '6379:6379'
